@@ -55,23 +55,21 @@ namespace TvApi.Repositories
 
         public List<TvChannel> List()
         {
-            //List<TvChannel> listChannels = TvContext.TvChannels.ToList()
-            // listChannels.ForEach(element =>
-            //{
-            //    element.Audiences = TvContext.Audiences.Where(x => x.TvChannelId == element.Id).ToList();
-            //});
-            return (from tv in TvContext.TvChannels
-                    join audience in TvContext.Audiences on tv.Id
-                    equals audience.TvChannelId
-                    //into audiences
-                    //from audience in audiences.DefaultIfEmpty()
-                    
-                    select new TvChannel
-                    {
-                        Id = tv.Id,
-                        Name = tv.Name,
-                        Audiences = tv.Audiences.Where(x => x.TvChannelId == tv.Id).ToList(),
-                    } ).ToList();
+            List<TvChannel> listChannels = TvContext.TvChannels.ToList();
+            TvContext.TvChannels.ToList().ForEach(element =>
+            {
+                element.Audiences = TvContext.Audiences.Where(x => x.TvChannelId == element.Id).ToList();
+            });
+            //return (from tv in TvContext.TvChannels
+            //        join audience in TvContext.Audiences on tv.Id
+            //        equals audience.TvChannelId
+            //        select new TvChannel
+            //        {
+            //            Id = tv.Id,
+            //            Name = tv.Name,
+            //            Audiences = TvContext.Audiences.Where(x => x.TvChannelId == tv.Id).ToList()
+            //        }).ToList();
+            return listChannels;
         }
     }
 }
